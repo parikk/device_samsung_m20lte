@@ -28,6 +28,9 @@ dalvik.vm.lockprof.threshold=500
 # Display
 ro.hwui.render_ahead=10
 
+# Feature flags
+persist.sys.fflag.override.settings_enable_monitor_phantom_procs=false
+
 ## Fdsan
 # Set fdsan to the warn_once severity level
 debug.fdsan=warn_once
