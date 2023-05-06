@@ -25,6 +25,9 @@ vendor.camera.hal1.packagelist=com.whatsapp,com.whatsapp.w4b,com.facebook.orca,c
 ## Dalvik
 dalvik.vm.lockprof.threshold=500
 
+# Display
+ro.hwui.render_ahead=10
+
 ## Fdsan
 # Set fdsan to the warn_once severity level
 debug.fdsan=warn_once
