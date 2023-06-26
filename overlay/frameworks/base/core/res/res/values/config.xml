@@ -179,4 +179,7 @@
     <bool name="config_unplugTurnsOnScreen">true</bool>
 
     <string name="config_mainBuiltInDisplayCutout">M 0,0 H 56.76190476190476 L 0,32.47619047619048 L -56.76190476190476,0 Z @dp</string>
+
+    <!-- Should the pinner service pin the Camera application? -->
+    <bool name="config_pinnerCameraApp">false</bool>
 </resources>
