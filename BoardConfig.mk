@@ -1,4 +1,5 @@
-COMMON_PATH := device/samsung/universal7904-common
+LOCAL_PATH := device/samsung/m20lte
+DEVICE_PATH := device/samsung/m20lte
 
 BOARD_VENDOR := samsung
 
@@ -39,22 +40,29 @@ BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_SEC_FP_HAS_FINGERPRINT_GESTURES := true
 
 # Include
-TARGET_SPECIFIC_HEADER_PATH := $(COMMON_PATH)/include
+TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
 
 # Kernel
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
+BOARD_KERNEL_SEPARATED_DT := true
+BOARD_CUSTOM_BOOTIMG_MK := hardware/samsung/mkbootimg.mk
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
+TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
+TARGET_KERNEL_CONFIG := m20lte_defconfig
 TARGET_KERNEL_SOURCE := kernel/samsung/universal7904
 TARGET_KERNEL_ADDITIONAL_FLAGS := HOSTCFLAGS="-fuse-ld=lld -Wno-unused-command-line-argument"
 
 # HIDL
-DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
-DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 
 ODM_MANIFEST_SKUS += NFC
-ODM_MANIFEST_NFC_FILES := $(COMMON_PATH)/manifest_nfc.xml
+ODM_MANIFEST_NFC_FILES := $(DEVICE_PATH)/manifest_nfc.xml
+
+# Init
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_m20lte
 
 # Lineage Health
 TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH := /sys/class/power_supply/battery/batt_slate_mode
@@ -68,17 +76,24 @@ BOARD_USES_METADATA_PARTITION := true
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 BOARD_CACHEIMAGE_PARTITION_SIZE := 157286400
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 39845888
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3565158400
 BOARD_VENDORIMAGE_PARTITION_SIZE   := 452984832
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /mnt/vendor/efs:/efs \
+    /mnt/vendor/efs:/factory
+
 # Properties
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
 BOARD_HAS_DOWNLOAD_MODE := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.exynos7904
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
@@ -88,13 +103,20 @@ ifneq ($(LINEAGE_BUILD),)
 include device/lineage/sepolicy/exynos/sepolicy.mk
 endif
 include device/samsung_slsi/sepolicy/sepolicy.mk
-BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
+BOARD_SEPOLICY_TEE_FLAVOR := mobicore
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+
+# SPL
+VENDOR_SECURITY_PATCH := 2023-02-01
 
 # Vendor
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Vibrator
 $(call soong_config_set,samsungVibratorVars,duration_amplitude,true)
+
+# VINTF
+DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/android.hardware.keymaster@3.0-service.xml
 
 # VNDK
 BOARD_VNDK_VERSION := current

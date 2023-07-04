@@ -1,5 +1,8 @@
+LOCAL_PATH := device/samsung/m20lte
+DEVICE_PATH := device/samsung/m20lte
+
 # Call proprietary blob setup
-$(call inherit-product, vendor/samsung/universal7904-common/universal7904-common-vendor.mk)
+$(call inherit-product, vendor/samsung/m20lte/m20lte-vendor.mk)
 
 # Dalvik
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
@@ -108,6 +111,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/uinput-sec-fp.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-sec-fp.kl
 
+# Keymaster
+PRODUCT_PACKAGES += \
+    android.hardware.keymaster@3.0-service \
+    android.hardware.keymaster@3.0-impl \
+    libkeymaster3device
+
 # Light
 PRODUCT_PACKAGES += \
     android.hardware.light-service.samsung
@@ -137,11 +146,13 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
-    $(LOCAL_PATH)/configs/nfc/nfcee_access.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/nfcee_access.xml
+    $(LOCAL_PATH)/configs/nfc/nfcee_access.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/nfcee_access.xml \
+    $(LOCAL_PATH)/configs/libnfc-sec-vendor.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-sec-vendor.conf
 
 # Overlays
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
-DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay-lineage
+DEVICE_PACKAGE_OVERLAYS += \
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/overlay-lineage
 
 # RRO (Runtime Resource Overlay)
 PRODUCT_ENFORCE_RRO_TARGETS += *
@@ -210,6 +221,12 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     secril_config_svc
+
+# Rootdir
+PRODUCT_PACKAGES += \
+	fstab.exynos7904 \
+	init.target.rc \
+	init.baseband.rc
 
 # SamsungDoze
 PRODUCT_PACKAGES += \

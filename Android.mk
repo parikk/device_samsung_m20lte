@@ -1,10 +1,8 @@
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter m20lte m30lte a40 a30, $(TARGET_DEVICE)),)
+ifneq ($(filter m20lte, $(TARGET_DEVICE)),)
 
-  subdir_makefiles=$(call first-makefiles-under,$(LOCAL_PATH))
-  $(foreach mk,$(subdir_makefiles),$(info including $(mk) ...)$(eval include $(mk)))
-
+include $(call all-makefiles-under,$(LOCAL_PATH))
 include $(CLEAR_VARS)
 
 EGL_LIBS := libGLES_mali.so libOpenCL.so libOpenCL.so.1 libOpenCL.so.1.1 hw/vulkan.$(TARGET_BOARD_PLATFORM).so
