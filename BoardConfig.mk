@@ -3,6 +3,8 @@ DEVICE_PATH := device/samsung/m20lte
 
 BOARD_VENDOR := samsung
 
+ALLOW_MISSING_DEPENDENCIES=true
+
 # Platform
 TARGET_BOARD_PLATFORM := universal7904
 TARGET_SOC := exynos7904
