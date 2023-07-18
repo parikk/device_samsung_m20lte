@@ -101,9 +101,7 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.exynos7904
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # Sepolicy
-ifneq ($(LINEAGE_BUILD),)
-include device/lineage/sepolicy/exynos/sepolicy.mk
-endif
+include device/evolution/sepolicy/exynos/sepolicy.mk
 include device/samsung_slsi/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_TEE_FLAVOR := mobicore
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
